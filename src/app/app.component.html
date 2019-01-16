@@ -1,0 +1,22 @@
+<div>
+  <mat-toolbar color="primary">
+  	<a routerLink="/">
+	  	<button mat-icon-button>
+	    	<mat-icon color="accent">home</mat-icon>
+	    </button>
+	</a>
+    <h1>{{ title }}</h1>
+    <button mat-raised-button color="accent">Log Out</button>
+  </mat-toolbar>
+
+</div>
+<nav mat-tab-nav-bar [backgroundColor]="background">
+  <a mat-tab-link *ngFor="let link of links"
+     [routerLink]=link.path
+     routerLinkActive #rla="routerLinkActive"
+     [active]="rla.isActive"> {{link.name}} </a>
+</nav>
+<router-outlet></router-outlet>
+<footer>
+	<img src="assets/TitanLogo2.jpg">
+</footer>
