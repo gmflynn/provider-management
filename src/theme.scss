@@ -1,6 +1,6 @@
 @import '~@angular/material/theming';
 
-$custom-typography: mat-typography-config($font-family: '"Passion One", cursive;');
+$custom-typography: mat-typography-config($font-family: '"Krub", sans-serif;');
 @include mat-core($custom-typography);
 
 $dark-primary: mat-palette($mat-blue-grey);

@@ -1,21 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {MatTableDataSource} from '@angular/material';
-
-export interface Vendor {
-  active: boolean;
-  name: string;
-  recipientid: number;
-  numberofrooms: number;
-}
-
-const VENDOR_DATA: Vendor[] = [
-  {active: true, name: 'MadSky', recipientid: 1434323, numberofrooms: 3},
-  {active: true, name: 'Nexxus', recipientid: 8565234, numberofrooms: 4},
-  {active: false, name: 'Merrimack Roofs', recipientid: 7732455, numberofrooms: 2},
-  {active: true, name: 'Roof Repair Co.', recipientid: 2233775, numberofrooms: 2},
-  {active: false, name: 'Pyramid', recipientid: 1127645, numberofrooms: 3},
-  {active: false, name: 'NewPro', recipientid: 2221766, numberofrooms: 1},
-];
+import { map } from 'rxjs/operators';
+import {VendorService} from '../vendor.service';
+import {DataSource} from '@angular/cdk/table';
+import {Observable} from 'rxjs';
+import {ScorecardVendor} from './scorecard-detail';
 
 @Component({
   selector: 'app-grn',
@@ -23,15 +11,32 @@ const VENDOR_DATA: Vendor[] = [
   styleUrls: ['./grn.component.scss']
 })
 export class GRNComponent implements OnInit {
-  displayedColumns: string[] = ['active', 'name', 'recipientid', 'numberofrooms'];
-  dataSource = new MatTableDataSource(VENDOR_DATA);
+    displayedColumns: string[] = ['active', 'name', 'recipientid', 'numberofrooms', 'allocation'];
+    dataSource;
 
-  applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-  constructor() { }
+    constructor(private vendorService: VendorService) { }
 
-  ngOnInit() {
-  }
+    search(zipCode: string): void {
+        this.dataSource = new GRNDataSource(this.vendorService, zipCode);
+    }
 
+    getIcon(bool: boolean): string {
+       return (bool) ? 'check_circle' : 'cancel';
+    }
+
+    ngOnInit(): void {
+    }
+}
+
+export class GRNDataSource extends DataSource<any> {
+    constructor(private vendorService: VendorService, private zipCode: string) {
+        super();
+    }
+    connect(): Observable<ScorecardVendor[]> {
+            return this.vendorService.searchScorecards(this.zipCode).pipe(
+                map(response => {
+                    return response.vendors;
+            }));
+    }
+    disconnect() {}
 }
