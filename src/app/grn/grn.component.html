@@ -1,14 +1,11 @@
  <div>
  	<div class="form-fields">
- 		<div layout="row" flex>
-			<mat-form-field>
-				<input matInput placeholder="Zip Code">
+ 		<div layout="row" layout-margin>
+			<mat-form-field class="search-width">
+				<input matInput #searchBox placeholder="Zip Code">
 			</mat-form-field>
-			<button mat-raised-button color="primary">Search</button>
+			<button mat-raised-button color="primary" (click)="search(searchBox.value)">Search</button>
 		</div>
-		<mat-form-field>
-	  		<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
-		</mat-form-field>
 	</div>
 
 	<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
@@ -16,26 +13,34 @@
 	  <!-- Position Column -->
 	  <ng-container matColumnDef="active">
 	    <th mat-header-cell *matHeaderCellDef> Active </th>
-	    <td mat-cell *matCellDef="let vendor"> {{vendor.active}} </td>
+	    <td mat-cell *matCellDef="let vendor">
+            <mat-icon *ngIf=vendor.activeIndicator>check_circle</mat-icon>
+            <mat-icon *ngIf=!vendor.activeIndicator>cancel</mat-icon>
 	  </ng-container>
 
 	  <!-- Name Column -->
 	  <ng-container matColumnDef="name">
 	    <th mat-header-cell *matHeaderCellDef> Name </th>
-	    <td mat-cell *matCellDef="let vendor"> {{vendor.name}} </td>
+	    <td mat-cell *matCellDef="let vendor"> {{vendor.vendorName}} </td>
 	  </ng-container>
 
 	  <!-- Weight Column -->
 	  <ng-container matColumnDef="recipientid">
 	    <th mat-header-cell *matHeaderCellDef> Recipient ID </th>
-	    <td mat-cell *matCellDef="let vendor"> {{vendor.recipientid}} </td>
+	    <td mat-cell *matCellDef="let vendor"> {{vendor.recipientId}} </td>
 	  </ng-container>
 
 	  <!-- Symbol Column -->
 	  <ng-container matColumnDef="numberofrooms">
 	    <th mat-header-cell *matHeaderCellDef> Number of Rooms </th>
-	    <td mat-cell *matCellDef="let vendor"> {{vendor.numberofrooms}} </td>
+	    <td mat-cell *matCellDef="let vendor"> {{vendor.numberOfRoomsHandled}} </td>
 	  </ng-container>
+
+		<!-- Symbol Column -->
+		<ng-container matColumnDef="allocation">
+			<th mat-header-cell *matHeaderCellDef> Allocation </th>
+			<td mat-cell *matCellDef="let vendor"> {{vendor.scorecardAllocation}}% </td>
+		</ng-container>
 
 	  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
 	  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

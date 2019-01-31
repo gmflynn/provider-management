@@ -1,0 +1,11 @@
+{
+  "/api/grn/property/vendors/*": {
+    "target": "https://home-damage-honeycomb-develop.np.uscm.libertyec.com/property-vendor-v0/scorecards/",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/api/grn/property/vendors": ""
+    }
+  }
+}
